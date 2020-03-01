@@ -66,7 +66,7 @@ class PlexPlayer(object):
 
         videoRes = self.media.getVideoResolution()
         obj.fullHD = videoRes >= 1080
-        obj.streamQualities = (videoRes >= 480 and self.item.settings.getGlobal("IsHD")) and ["HD"] or ["SD"]
+        obj.streamQualities = (videoRes >= 480) and ["HD"] or ["SD"]
 
         frameRate = self.media.videoFrameRate or "24p"
         if frameRate == "24p":
@@ -429,10 +429,7 @@ class PlexPlayer(object):
         obj.isTranscoded = True
 
         # if server.supportsFeature("mkvTranscode") and self.item.settings.getPreference("transcode_format", 'mkv') != "hls":
-        if server.supportsFeature("mkvTranscode"):
-            builder = self.buildTranscodeMkv(obj)
-        else:
-            builder = self.buildTranscodeHls(obj)
+        builder = self.buildTranscodeHls(obj)
 
         if self.item.getServer().TYPE == 'MYPLEXSERVER':
             path = server.swizzleUrl(self.item.getAbsolutePath("key"))
